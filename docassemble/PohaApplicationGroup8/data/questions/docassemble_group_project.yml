@@ -1,0 +1,1016 @@
+metadata:
+  title: |
+    POHA Interview
+  short title: |
+    POHA
+  description: |
+    This is an interview to guide an applicant through the process of filing for protection from harassment.
+  authors:
+  - name: Constance Tay, Tan Zay Hua, Victoria Phua
+    organization: COR-LAW-2215 Digital Intelligence for Lawyers
+  revision_date: 2020-11-9
+---
+sections:
+  - Introduction
+  - Protection Orders:
+    - Personal Information
+    - Perpetuator Information
+    - Other Information
+  - False Statement Orders:
+    - Applicant Information
+    - Order Type
+    - Interim Order
+    - Respondent Information
+    - Background Information
+  - Conclusion
+---
+features:
+  navigation: True
+  default date min: "1900-01-01"
+---
+interview help:
+  label: More Info
+  heading: More information about POHA applications
+  content: |
+    Feel free to read more about the [POHA](https://www.statecourts.gov.sg/cws/FillingForHarassment/Pages/Overview-of-the-Protection-from-Harassment-Act.aspx) or the [process for civil application under POHA](https://www.statecourts.gov.sg/cws/FillingForHarassment/Pages/Filing-a-Civil-Application-under-POHA.aspx).
+---
+images:
+  state court logo: statecourts-logo.jpg
+---
+objects:
+  victim: Individual
+  perpetuator: Individual
+  applicant: Individual
+  respondent: Individual
+  solicitor: Individual
+---
+# main code block for the interview
+mandatory: True
+code: |
+  error = ""
+  ready_to_proceed
+  if filed_case == True: 
+    error = "This application form is meant for applicants who have yet to file a case."
+    non_eligible
+  if type_of_claim == "Family Violence":
+    error = "POHA does not cover cases of family violence. Please apply for a Personal Protection Order under the Women's Charter. [Click here](https://www.familyjusticecourts.gov.sg/what-we-do/family-courts/family-protection) for more information."
+    non_eligible 
+  elif type_of_claim == "Harassment":
+    remedy_seeking_harassment
+    if remedy_seeking_harassment == "Criminal Remedy":
+      if pfa_filed == False:
+        error = "You have not filed a Pre-Filing Assessment for Magistrate's Complaint yet. Please complete the form [here](https://form.gov.sg/#!/5ce351c15b73fe00175fb7be)."
+        criminal_exit
+      elif mag_complaint_drafted == False:
+        error = "You have not drafted a Magistrate's Complaint yet. Please complete the form [here](https://ww3.cjc.org.sg/magistrates-complaint/)."
+        criminal_exit
+      else:
+        criminal_exit
+    elif remedy_seeking_harassment == "Civil Remedy (Monetary compensation)":
+      monetary_compensation_exit  
+    
+    victim.yesno
+    victim.birthdate
+    if victim.age_in_years() < 21:
+      error = "You cannot apply for the Protection Order as you are below 21 years of age. If you are the victim, your application must be done by your litigation representative, who should be your parent or legal guardian and must in turn act by a solicitor."
+      non_eligible
+    victim.name
+    victim.nric
+    victim.country
+    victim.gender
+    victim.address
+    victim.telephone
+    victim.email
+    victim.language
+    public_servant
+    another_yes
+    perpetuator.name
+    perpetuator.nric
+    perpetuator.country
+    perpetuator.gender
+    perpetuator.dob
+    perpetuator.address
+    perpetuator.telephone
+    perpetuator.email
+    perpetuator.electronic_means
+    perpetuator.relationship
+    perpetuator.website_address
+    perpetuator.blog_address
+    perpetuator.social_media
+    perpetuator.social_media_pages
+    perpetuator.Singapore_location
+    perpetuator.Singapore_location_reason
+    doxxing_or_harassment
+    epo_yesno
+    victim.things_done
+    sections_contravened
+    victim.harm
+    communication_things
+    communication_particulars
+    communication_harm
+    victim.photographs
+    victim.documents
+    victim.evidence
+    approached_perpetuator 
+    police_report
+    medical_report
+    imminent_contravention
+    victim.photographs_repeat
+    victim.documents_repeat
+    victim.evidence_repeat
+    victim.signature
+    yes_represented
+    application_day
+    application_month
+    application_year
+    form_235_approved
+    form_236_approved
+    end_page
+
+  elif type_of_claim == "Falsehoods":
+    remedy_seeking_falsehoods
+    if remedy_seeking_falsehoods == "Civil Remedy (Monetary compensation)": 
+      monetary_compensation_exit 
+    applicant.yesno
+    applicant.birthdate
+    if applicant.age_in_years() < 21:
+      error = "You cannot apply for the Falsehoods Order as you are below 21 years of age. If you are the victim, your application must be done by your litigation representative, who should be your parent or legal guardian and must in turn act by a solicitor."
+      non_eligible 
+
+    applicant.name_first
+    applicant.name_last
+    applicant.country
+    applicant.address
+    applicant.nric
+    person  
+    applicant.interim_order
+    respondent.name
+    respondent.country   
+    respondent.address
+    respondent.electronic_means
+    respondent.nric
+    respondent.relationship
+  
+    respondent.website_address
+    respondent.blog_address
+    respondent.social_media
+    respondent.social_media_pages
+    respondent.Singapore_location
+    respondent.Singapore_location_reason
+    respondent.false_statement
+    respondent.false_statement_subject
+    respondent.originator
+    respondent.not_serve_originator
+    respondent.false_statement_subject_particulars
+    respondent.false_statement_location
+    applicant.attach
+ 
+    respondent.not_approach_author
+    respondent.not_approach_respondent
+  
+    respondent.harm_caused
+    evidence_file
+    applicant.signature
+    yes_represented
+    application_day
+    application_month
+    application_year
+
+    form_242_approved
+    form_243_approved
+    if applicant.interim_order == True:
+      form_242A_approved
+    
+    end_page
+---
+question: |
+  This is the Protection from Harassment Act (POHA) Application Interview.
+subquestion: |
+  Under the Protection from Harassment Act (“POHA”), you can apply to the court to seek protection from harassment, alarm or distress. In Singapore, we call this a protection order (PO).[BR]
+  You can also apply to the court for a stop publication order (SPO) to stop other individuals or entities from publishing falsehoods about you, and for a correction order (CO) to instruct them to correct the falsehood. [BR]
+  If the publication involves an internet intermediary, you may apply for a disabling order (DO) to stop it from publishing falsehood about you, and a targeted correction order (TCO) to correct the falsehood.[BR]
+  If the court finds that the false publication has caused or is likely to cause serious harm to your reputation, you may apply to the court for a general correction order (GCO) to require news outlets, broadcasters or internet intermediaries to publish the correction of the falsehood. These orders in relation to false statements are called false statement orders.[BR]
+  
+  Feel free to read more about the [POHA](https://www.statecourts.gov.sg/cws/FillingForHarassment/Pages/Overview-of-the-Protection-from-Harassment-Act.aspx) or the [process for civil application under POHA](https://www.statecourts.gov.sg/cws/FillingForHarassment/Pages/Filing-a-Civil-Application-under-POHA.aspx) before proceeding with the interview.
+field: ready_to_proceed
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Introduction
+---
+question: |
+ Please answer the following questions.
+fields:
+  - Have you filed a case yet?: filed_case
+    datatype: yesnoradio
+  - Which applies to you?: type_of_claim
+    input type: radio
+    choices:
+      - Harassment
+      - Falsehoods
+      - Family Violence
+    show if: 
+      variable: filed_case
+      is: False
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Introduction
+---
+question: |
+  **Criminal Remedy**
+subquestion: |
+  Click on the green text below for a detailed explanation of the interview question fields.
+fields:
+  - Have you filed a Pre-Filing Assessment for Magistrate's Complaint?: pfa_filed
+    datatype: yesnoradio
+    help: |
+      The Pre-Filing Assessment can be found [here](https://form.gov.sg/#!/5ce351c15b73fe00175fb7be).
+  - Have you drafted a Magistrate's Complaint?: mag_complaint_drafted
+    datatype: yesnoradio
+    help: |
+      The Magistrate's Complaint application can be found [here](https://form.gov.sg/#!/5e7c689caee0b50011cb5e51).
+    show if:
+      variable: pfa_filed
+      is: True
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+Section: Introduction
+---
+question: |
+  Which remedy are you seeking?
+field: remedy_seeking_harassment
+choices:
+  - Criminal Remedy 
+  - Civil Remedy (Monetary compensation)
+  - Civil Remedy (Protection Order, Expedited Protection Order)
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Introduction
+---
+question: |
+  Which remedy are you seeking?
+field: remedy_seeking_falsehoods
+choices: 
+  - Civil Remedy (Monetary compensation)
+  - Civil Remedy (Falsehood Orders)
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Introduction
+---
+# exit pages for type of remedy
+event: criminal_exit
+question: |
+  You are seeking to file a criminal case.
+subquestion: |
+  ${ error }
+  
+  Please refer to [this page](https://www.statecourts.gov.sg/cws/FilingMagistrateComplaint/Pages/Filing-a-Magistrate-Complaint.aspx) for further instructions.
+buttons: 
+  - Exit: exit
+  - Restart: restart
+back button: True
+back button label: |
+  Go back, I would like to apply for Civil remedy.
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+Section: Conclusion
+---
+event: monetary_compensation_exit
+question: |
+  You are seeking to file a civil suit for monetary compensation.
+subquestion: |
+  Please refer to [this page](https://www.statecourts.gov.sg/cws/CivilCase/Pages/Overview1211-284.aspx) for more information on civil suits.
+buttons: 
+  - Exit: exit
+  - Restart: restart
+back button: True
+back button label: |
+  Go back.
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+Section: Conclusion
+---
+# question block for Part 1
+question: |
+  This section guides you through the protection orders.[BR]
+subquestion: |
+  Please provide your details as the applicant in your own capacity as victim. If you are a minor (below the age of 21 years), your application must be made by your litigation representative.
+fields:
+  - 'Are you the victim?': victim.yesno
+    datatype: noyesradio
+  - 'Enter your birthdate': victim.birthdate
+    datatype: date
+    max: |
+      ${ today() } 
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Protection Orders
+---
+question: |
+  Please fill in your personal information below.
+fields:
+  - 'Full Name': victim.name
+  - 'NRIC': victim.nric
+  - 'Country': victim.country
+    code: |
+      countries_list()
+    default: Singapore
+  - 'Gender': victim.gender
+    choices:
+      - Male
+      - Female
+  - 'Address': victim.address
+    address autocomplete: true
+  - 'Telephone No.': victim.telephone
+    datatype: integer
+  - 'Email Address': victim.email
+    datatype: email
+  - 'Language(s) Spoken': victim.language
+  - 'Are you a public servant?': public_servant
+    datatype: yesnoradio
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Personal Information
+---
+question: |
+  Please fill in the information below.
+subquestion: |
+  Has the respondent threatened the safety or well-being of **a person other than the victim**, to an extent that one would reasonably be expected to be seriously concerned?
+fields:
+  - Is there a Second victim?: another_yes
+    datatype: yesnoradio
+  - Name of Second victim: another_name
+    show if: another_yes
+  - Things done to the Second victim: another_things
+    datatype: area
+    show if: another_yes
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Personal Information
+---
+question: |
+  Please fill in the background information below:
+subquestion: |
+  Respondent details
+fields:
+  - 'Name of respondent or, if the name is unknown, Unique Identifier (e.g. Internet location address, website, username or account or email address)': perpetuator.name
+  - 'NRIC No.': perpetuator.nric 
+  - 'Country': perpetuator.country
+    code: |
+      countries_list()
+    default: Singapore
+  - 'Gender': perpetuator.gender
+    choices:
+      - Male
+      - Female
+  - 'Date of Birth': perpetuator.dob
+    datatype: date
+    max: |
+      ${ today() } 
+  - 'Address': perpetuator.address
+    address autocomplete: true
+  - 'Telephone No.': perpetuator.telephone
+    datatype: integer
+  - 'Email Address': perpetuator.email
+    datatype: email
+  - 'Other electronic means of contacting the Respondent': perpetuator.electronic_means
+    required: False
+  - 'Relationship to the victim (if any)': perpetuator.relationship
+    required: False
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Perpetuator Information
+---
+question: |
+  Please provide details about the Respondent.
+subquestion: |
+  Respondent's presence on the Internet, to the best of your knowledge.
+fields:
+  - 'Internet website address': perpetuator.website_address
+    required: False
+  - 'Blog (or weblog) address': perpetuator.blog_address
+    required: False
+  - 'Account on social media or social networking website': perpetuator.social_media
+    required: False
+  - 'Pages on social media or social networking website': perpetuator.social_media_pages
+    required: False
+  - 'Is the respondent in Singapore?': perpetuator.Singapore_location
+    datatype: yesnoradio
+  - "Please provide the grounds for your belief about the respondent's presence/absence in Singapore": perpetuator.Singapore_location_reason
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Perpetuator Information
+---
+question: |
+  Is your case one of doxxing or harrassment?
+field: doxxing_or_harassment
+buttons: 
+  - Doxxing
+  - Harassment
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Are you applying for an expedited protection order (EPO)?
+subquestion: |
+  An Expedited Protection Order (EPO) is for when you require a PO urgently. An EPO may be granted within 48 to 72 hours of filing an application and, where there is a risk of violence or actual violence, possibly within 24 hours. A PO application may also be processed within 4 weeks.
+yesno: epo_yesno
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Please describe the thing(s) in relation to which you wish to obtain protection against. 
+subquestion: |
+  Examples include: 
+  (i) Posting abusive and threatening remarks on social media; 
+  (ii) Posting your identity information online; 
+  (iii) Following you
+fields:
+  - Thing(s): victim.things_done
+    input type: area
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Which provision applies best to your case? Please provide reasons.
+subquestion: |
+  - S3: a person who threatens, abuses or insults (whether by behaviour, words or other forms of communication) with the intention to cause and did cause another person harassment, alarm or distress
+  - S4: a person who threatens, abuses or insults (whether by behaviour, words or other forms of communication) which likely causes and did cause another person harassment, alarm or distress
+  - S5: a person intentionally causes someone to believe, or behave in a manner where such a person is likely to believe, that unlawful violence will be used against him. This offence is different from the one above as there is a threat of physical violence while harassment, alarm or distress are non-physical forms of harm.
+  - S6: public servant
+  - S7: Unlawful stalking, examples include: following someone
+fields:
+  - Section(s) Applicable: sections_contravened
+    input type: area
+  - What harm has the Respondent caused you?: victim.harm
+    input type: area
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  What are the offending communications that you want the Respondent to stop or not publish?
+fields:
+  - Response: communication_things
+    input type: area
+  - Particulars (e.g. Internet location address of each publication on the Internet): communication_particulars
+    input type: area
+  - What harm has the Respondent caused you?: communication_harm
+    input type: area
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Please upload evidence in support of your statements above.
+fields:
+  - Picture(s): victim.photographs
+    datatype: files
+    required: False
+  - Document(s): victim.documents
+    datatype: files
+    required: False
+  - Other evidence (e.g. electronic documents or records): victim.evidence
+    datatype: files
+    required: False
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Please fill in the information below.
+fields:
+  - Have you approached the perpetrator to remove the offending communication mentioned above?: approached_perpetuator
+    datatype: yesnoradio
+  - How did the perpetrator respond to you?: perpetuator.response
+    input type: area
+    show if: approached_perpetuator
+  - Why didn't you approach the perpetrator?: perpetuator.no_approach  
+    input type: area
+    show if: 
+      variable: approached_perpetuator
+      is: False
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Have you lodged a police report with regard to the harrassment?
+fields:
+  - Lodged police report: police_report
+    datatype: yesnoradio
+  - When did you lodge the police report?: police_report_date
+    datatype: date
+    show if: police_report
+    max: |
+      ${ today() } 
+  - What time did you lodge the police report? (in 0000): police_report_time
+    datatype: integer
+    show if: police_report
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Have you sought medical assistance in respect of the harm mentioned?
+fields:
+  - Sought medical attention: medical_report
+    datatype: yesnoradio
+  - When did you seek medical assistance?: medical_report_date
+    datatype: date
+    show if: medical_report
+    max: |
+      ${ today() } 
+  - What time did you seek medical assistance? (in 0000): medical_report_time
+    datatype: integer
+    show if: medical_report
+  - Receipt No. or Registration No.: medical_report_receipt
+    show if: medical_report
+  - Diagnosis or treatment: medical_report_diagnosis
+    show if: medical_report
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Do you think that the Respondent is likely to commit the new contravention mentioned imminently?
+fields:
+  - Response: imminent_contravention
+    datatype: yesnoradio
+  - What provision do you think the Respondent will contravene imminently?: contravention_provision
+    input type: area
+    show if: imminent_contravention
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Please upload evidence in support of your statements with regard to whether the victim may contravene the provision imminently.
+fields:
+  - Picture(s): victim.photographs_repeat
+    datatype: files
+    required: False
+  - Document(s): victim.documents_repeat
+    datatype: files
+    required: False
+  - Other evidence (e.g. electronic documents or records): victim.evidence_repeat
+    datatype: files
+    required: False
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Please sign your name below.
+signature: victim.signature
+under: |
+  ${ victim.name }
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Please provide details of your solicitor
+fields:
+  - Did you engage a solicitor for this matter?: yes_represented
+    datatype: yesnoradio
+  - Name of solicitor: solicitor.name
+    show if: yes_represented
+  - Address of solicitor: solicitor.address
+    show if: yes_represented
+  - Contact Number of solicitor: solicitor.telephone
+    show if: yes_represented
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+question: |
+  Please fill in the application day, month and year.
+fields:
+  - Application Day: application_day
+    datatype: integer
+  - Application Month: application_month
+  - Application Year: application_year
+    datatype: integer
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Other Information
+---
+#This form generation block ends with liabibility disclaimer.
+question: |
+  Here is the Form 235, your Ex-Parte Originating Summons.
+subquestion: |
+  Please verify that the information in this is **true and accurate** to the best of your knowledge.
+  **Please click yes only after downloading the document.**
+yesno: form_235_approved
+attachment:
+  name: Form_235_for(${ victim.name })
+  filename: Form_235_for(${ victim.name })
+  docx template file: Form_235_Ex-Parte_Originating_Summons_for_PO_or_EPO_4_4_1.docx
+  valid formats:
+    - pdf
+    - docx
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+under: |
+  Liability Disclaimer [BR]
+  The legal information on the Website is not legal advice and is not guaranteed to be correct, complete or up-to-date. [BR]
+   Because the law changes rapidly, we cannot guarantee that all the information on the Website is completely current. [BR]
+  The information may also include inaccuracies or typographical errors.
+Section: Conclusion
+---
+question: |
+  Here is the Form 236, your Affidavit.
+subquestion: |
+  Please verify that the information in this is **true and accurate** to the best of your knowledge.
+  **Please click yes only after downloading the document.**
+yesno: form_236_approved
+attachment:
+  name: Form_236_for(${ victim.name })
+  filename: Form_236_for(${ victim.name })
+  docx template file: Form_236_Affidavit_for_PO_or_EPO_v2_1.docx
+  valid formats:
+    - pdf
+    - docx
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+under: |
+  Liability Disclaimer [BR]
+  The legal information on the Website is not legal advice and is not guaranteed to be correct, complete or up-to-date. [BR]
+   Because the law changes rapidly, we cannot guarantee that all the information on the Website is completely current. [BR]
+  The information may also include inaccuracies or typographical errors.
+Section: Conclusion
+---
+# question block for Part 2 - False Statement Orders (FSO)
+question: |
+  This section guides you through the false statement orders.[BR]
+subquestion: |
+  Please provide your details as the applicant in your own capacity as victim. If you are a minor (below the age of 21 years), your application must be made by your litigation representative.
+fields:
+  - 'Are you the victim?': applicant.yesno
+    datatype: noyesradio
+  - 'Relationship to the applicant': applicant.relationship
+    show if:
+      variable: applicant.yesno
+      is: True
+  - 'Enter your birthdate': applicant.birthdate
+    datatype: date
+    max: |
+      ${ today() } 
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: False Statement Orders
+---
+# This block captures applicant's particulars and corresponds to Part A of Form 243.
+question: |
+  Applicant details
+fields:
+  - 'First Name': applicant.name_first
+  - 'Last Name': applicant.name_last
+  - 'Country': applicant.country
+    code: |
+      countries_list()
+    default: Singapore
+  - 'Address': applicant.address
+    address autocomplete: True
+  - 'NRIC': applicant.nric
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Applicant Information
+---
+# This block captures FSO order type, corresponds to Part C section 4 of Form 243. It captures info about respondent type (person vs entity). If entity, should it be internet intermediary (15C and 15D), news printing/ broadcasting/ telecommunication service provider (15E) or other entity type (15A and 15B), corresponds to Part C section 4 of Form 243.
+question: |
+  Is it a person or entity who publishes false statements about you or the victim?
+fields:
+  - 'Person': person
+    datatype: yesnoradio
+  - 'Final order type': applicant.finalorder_type
+    datatype: integer
+    show if: person
+    choices:
+      - 'Stop publication order': 1
+      - 'Correction order': 2
+  - 'Entity': entity
+    datatype: yesnoradio
+    show if:
+      variable: person
+      is: False
+  - 'Is this entity an internet intermediary?': internet_intermediary
+    datatype: yesnoradio
+    show if: entity
+  - 'Final order type': applicant.finalorder_type
+    datatype: integer
+    show if: internet_intermediary
+    choices:
+      - 'Disabling order': 3
+      - 'Targeted correction order': 4
+      - 'General correction order': 5
+  - 'Is this entity a newsprinting, broadcasting OR telecommunications service provider company?': general_intermediary
+    datatype: yesnoradio
+    show if:
+      variable: internet_intermediary
+      is: False
+  - 'Final order type': applicant.finalorder_type
+    datatype: integer
+    show if: general_intermediary
+    choices:
+      - 'General correction order': 5
+  - 'Final order type': applicant.finalorder_type
+    datatype: integer
+    show if:
+      variable: general_intermediary
+      is: False
+    choices:
+      - 'Stop publication order': 1
+      - 'Correction order': 2
+  - 'None of the above': none_of_the_above
+    datatype: yesnoradio
+    show if:
+      variable: entity
+      is: False
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Order Type
+---
+# This block assigns the correct values to respondent final order type and interim order type.
+mandatory: True
+code: |
+  if person:
+    respondent.type = 'person'
+  elif entity:
+    respondent.type = 'entity'
+  else:
+    error = "You cannot apply for the Falsehoods Order as the respondent must either be a person or entity."
+    non_eligible
+
+  if applicant.finalorder_type == 1:
+   applicant.finalorder_type_text = 'stop publication order'
+   applicant.interim_order
+  elif applicant.finalorder_type == 2:
+   applicant.finalorder_type_text = 'correction order'
+   applicant.interim_order
+  elif applicant.finalorder_type == 3:
+   applicant.finalorder_type_text = 'disabling order'
+   applicant.interim_order
+  elif applicant.finalorder_type == 4:
+   applicant.finalorder_type_text = 'targeted correction order'
+   applicant.interim_order
+  elif applicant.finalorder_type == 5:
+   applicant.finalorder_type_text = 'general correction order'
+   applicant.interim_order
+---
+# This block checks if the applicant wants to apply for interim orders. This corresponds to Part B of Form 243.
+question: |
+  Interim Order
+subquestion:  |
+  An interim order may be allowed by the Court to provide victims with urgent relief. Would you like to apply for interim order in relation to the ${ applicant.finalorder_type_text }?
+fields :
+   - 'Would you like to apply for an interim order?': applicant.interim_order
+     datatype: yesnoradio
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Interim Order
+---
+mandatory: True
+code: |
+  applicant.interimorder_type = 0
+  applicant.interimorder_type_text = ' '
+  if applicant.interim_order:
+    if applicant.finalorder_type == 1:
+      applicant.interimorder_type = 1
+      applicant.interimorder_type_text = 'Interim stop publication order'
+    elif applicant.finalorder_type == 2:
+      applicant.interimorder_type = 2
+      applicant.interimorder_type_text = 'Interim notification order'
+    elif applicant.finalorder_type == 3:
+      applicant.interimorder_type = 3
+      applicant.interimorder_type_text = 'Interim disabling order'
+    elif applicant.finalorder_type == 4:
+      applicant.interimorder_type = 4
+      applicant.interimorder_type_text = 'Targeted interim notification order'
+---
+# This block captures Part C Background info on respondents' particulars corresponding to section 5 of Form 243.
+question: |
+  Please provide details about the ${ respondent.type } who publishes false statements about you or the victim. This ${ respondent.type } is called the respondent.
+subquestion: |
+  Respondent details
+fields:
+  - 'Name of respondent or, if the name is unknown, Unique Identifier (e.g. Internet location address, website, username or account or email address)': respondent.name
+  - 'Country': respondent.country
+    code: |
+      countries_list()
+    default: Singapore
+  - 'Address for service': respondent.address
+    address autocomplete: True
+  - 'Other electronic means of contacting the respondent': respondent.electronic_means
+    required: False
+  - 'Identification number (if any)': respondent.nric
+    required: False
+  - 'Relationship to the victim (if any)': respondent.relationship
+    required: False
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Respondent Information
+---
+# This block captures Part C Background info on false statement details corresponding to sections 6 to 14 of Form 243.
+question: |
+  Please provide details about the ${ respondent.type } who publishes false statements about you or the victim.
+subquestion: |
+  Respondent's presence on the Internet, to the best of your knowledge; and details about the false statements
+fields:
+  - 'Internet website address': respondent.website_address
+  - 'Blog (or weblog) address': respondent.blog_address
+  - 'Account on social media or social networking website': respondent.social_media
+  - 'Pages on social media or social networking website': respondent.social_media_pages
+  - 'Is the respondent in Singapore?': respondent.Singapore_location
+    datatype: yesnoradio
+  - 'Please provide the grounds for your belief about the respondent''s presence/absence in Singapore': respondent.Singapore_location_reason
+  - 'Particulars of false statement': respondent.false_statement
+  - 'Subject of false statement': respondent.false_statement_subject
+  - 'Originator (author) of false statement': respondent.originator
+  - 'Are you able to serve the originator (author)?': respondent.not_serve_originator
+    datatype: noyesradio
+  - 'If not, why are you not able to serve the originator (author)?': respondent.not_serve_originator_reason
+    show if: respondent.not_serve_originator
+  - 'Please provide particular(s) about the subject where the statement of fact made is false': respondent.false_statement_subject_particulars
+  - 'Please provide particulars of the publication by the ${ respondent.type } of the relevant statement including the internet location address': respondent.false_statement_location
+  - 'Would you like to attach supporting documents?': applicant.attach
+    datatype: yesnoradio
+  - 'Please attach documents in support of your responses above': applicant.documents
+    datatype: file
+    show if: applicant.attach
+    required: False
+  - 'Please attach photographs in support of your responses above': applicant.photos
+    datatype: file
+    show if: applicant.attach
+    required: False
+  - 'Please attach other evidence (including electronic documents or records) in support of your responses above': applicant.other_records
+    datatype: file
+    show if: applicant.attach
+    required: False
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Background Information
+---
+#This block captures the actions of author (originator) and corresponds to section 15 of Form 243.
+question: |
+  Please provide details on the actions of the author (originator) of false statements about you or the victim.
+subquestion: |
+  Author's actions
+fields:
+  - 'Have you approached the author to remove or correct the relevant statement': respondent.not_approach_author
+    datatype: noyesradio
+  - 'Why did you not approach the author?': respondent.not_approach_author_reason
+    show if: respondent.not_approach_author
+  - 'What was the response of the author?': respondent.approach_author_response
+    show if:
+      variable: respondent.not_approach_author
+      is: False
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Background Information
+---
+#This block captures the actions of the respondent and corresponds to section 16 of Form 243.
+question: |
+  Please provide details on the actions of the ${ respondent.type } who publishes false statements about you or the victim.
+subquestion: |
+  Respondent's actions
+fields:
+  - 'Have you approached the ${ respondent.type } to remove or correct the relevant statement': respondent.not_approach_respondent
+    datatype: noyesradio
+  - 'Why did you not approach the ${ respondent.type }?': respondent.not_approach_respondent_reason
+    show if: respondent.not_approach_respondent
+  - 'What was the response of the ${ respondent.type }?': respondent.approach_respondent_response
+    show if:
+      variable: respondent.not_approach_respondent
+      is: False
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Background Information
+---
+#This block captures harm caused to victim and corresponds to section 17 of Form 243.
+question: |
+  Please provide details about the harm caused to the victim.
+subquestion: |
+  Harm caused to the victim
+fields:
+  - 'Do you believe that the publication of the relevant statement(s) has/have caused or is likely to cause the victim harm': respondent.harm_caused
+    datatype: yesnoradio
+  - 'Please attach evidence in support of your statement about harm caused to the victim': evidence_file
+    datatype: file
+    required: False
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+section: Background Information
+---
+question: |
+  Please sign your name below.
+signature: applicant.signature
+under: |
+  ${ applicant.name_first } ${ applicant.name_last }
+---
+question: |
+  Here is the Form 242, your Originating Summons.
+subquestion: |
+  Please verify that the information in this is **true and accurate** to the best of your knowledge.
+  **Please click yes only after downloading the document.**
+yesno: form_242_approved
+attachment:
+  name: Form_242_for(${ applicant.name_first } ${applicant.name_last})
+  filename: Form_242_for(${ applicant.name_first } ${applicant.name_last})
+  docx template file: Form_242_-_Ex_Parte_Originating_Summons_FSO_v2_1_1.docx
+  valid formats:
+    - pdf
+    - docx
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+under: |
+  Liability Disclaimer [BR]
+  The legal information on the Website is not legal advice and is not guaranteed to be correct, complete or up-to-date. [BR]
+   Because the law changes rapidly, we cannot guarantee that all the information on the Website is completely current. [BR]
+  The information may also include inaccuracies or typographical errors.
+Section: Conclusion
+---
+question: |
+  Here is the Form 242A, your Summons for Interim Orders.
+subquestion: |
+  Please verify that the information in this is **true and accurate** to the best of your knowledge.
+  **Please click yes only after downloading the document.**
+yesno: form_242A_approved
+attachment:
+  name: Form_242A_for(${ applicant.name_first } ${applicant.name_last})
+  filename: Form_242A_for(${ applicant.name_first } ${applicant.name_last})
+  docx template file: Form_242A_-_Summons_for_Interim_Orders_FSO_1_1_1_1.docx
+  valid formats:
+    - pdf
+    - docx
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+under: |
+  Liability Disclaimer [BR]
+  The legal information on the Website is not legal advice and is not guaranteed to be correct, complete or up-to-date. [BR]
+   Because the law changes rapidly, we cannot guarantee that all the information on the Website is completely current. [BR]
+  The information may also include inaccuracies or typographical errors.
+Section: Conclusion
+---
+question: |
+  Here is the Form 243, your Affidavit.
+subquestion: |
+  Please verify that the information in this is **true and accurate** to the best of your knowledge.
+  **Please click yes only after downloading the document.**
+yesno: form_243_approved
+attachment:
+  name: Form_243_for(${ applicant.name_first } ${applicant.name_last})
+  filename: Form_243_for(${ applicant.name_first } ${applicant.name_last})
+  docx template file: Form_243_Affidavit_for_FSO_v3_1.docx
+  valid formats:
+    - pdf
+    - docx
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+under: |
+  Liability Disclaimer [BR]
+  The legal information on the Website is not legal advice and is not guaranteed to be correct, complete or up-to-date. [BR]
+   Because the law changes rapidly, we cannot guarantee that all the information on the Website is completely current. [BR]
+  The information may also include inaccuracies or typographical errors.
+Section: Conclusion
+mandatory: True
+---
+#This is the main ineligible event screen.
+event: non_eligible
+question: |
+  Unfortunately, your case does not meet the requirements for a POHA application.
+subquestion: |
+  ${ error }
+  
+  For more information, please [click here](https://www.statecourts.gov.sg/cws/FillingForHarassment/Pages/Filing-a-Civil-Application-under-POHA.aspx).
+buttons: 
+  - Exit: exit
+  - Restart: restart
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+Section: Conclusion
+---
+#This is the main eligible event screen.
+event: end_page
+question: |
+  We have completed the interview. All the best!
+subquestion: |
+  Please edit your document if necessary.
+  
+  Please [click here](https://www.statecourts.gov.sg/cws/FillingForHarassment/Pages/Filing-a-Civil-Application-under-POHA.aspx) for more information.
+  
+  **Liability Disclaimer** [BR]
+  The legal information on the Website is not legal advice and is not guaranteed to be correct, complete or up-to-date. [BR]
+   Because the law changes rapidly, we cannot guarantee that all the information on the Website is completely current. [BR]
+  The information may also include inaccuracies or typographical errors.
+right: |
+  [FILE statecourts-logo.jpg, 60%] [BR]
+Section: Conclusion
+buttons:
+  - Restart: restart
+back button: True
+back button label: |
+  Go back
